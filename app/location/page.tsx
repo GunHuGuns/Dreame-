@@ -106,7 +106,7 @@ export default function LocationPage() {
     <div>
       <PageHeader
         title="设备位置"
-        description="查看设备位置信息，点击"显示"可在地图上查看设备位置"
+        description="查看设备位置信息，点击【显示】可在地图上查看设备位置"
       />
 
       <FilterPanel onSearch={handleSearch} onReset={handleReset}>
