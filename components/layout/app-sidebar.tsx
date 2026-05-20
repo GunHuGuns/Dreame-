@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   Menu,
   Home,
+  FileDown,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -53,6 +54,11 @@ const navItems = [
     title: '设备日志',
     href: '/logs',
     icon: FileText,
+  },
+  {
+    title: 'PRD文档',
+    href: '/prd',
+    icon: FileDown,
   },
 ]
 
