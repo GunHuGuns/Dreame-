@@ -89,6 +89,26 @@ export default function LogsPage() {
     ])
   }
 
+  // 下载单条日志
+  const handleDownloadLog = (item: DeviceLog) => {
+    const logContent = `日志ID: ${item.logId}
+IMEI: ${item.imei}
+Device ID: ${item.deviceId}
+SN: ${item.sn}
+日志类型: ${item.logType}
+日志级别: ${item.logLevel}
+时间戳: ${item.timestamp}
+日志详情:
+${item.detail}
+`
+    const blob = new Blob([logContent], { type: 'text/plain;charset=utf-8;' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = `日志_${item.logId}_${new Date().toISOString().slice(0, 10)}.txt`
+    link.click()
+    URL.revokeObjectURL(link.href)
+  }
+
   const getLogLevelType = (level: string): 'success' | 'warning' | 'error' | 'info' => {
     switch (level) {
       case 'ERROR':
@@ -135,8 +155,13 @@ export default function LogsPage() {
       key: 'actions',
       header: '操作',
       width: '100px',
-      render: () => (
-        <Button variant="ghost" size="sm" className="h-8 gap-1 text-primary">
+      render: (item) => (
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="h-8 gap-1 text-primary"
+          onClick={() => handleDownloadLog(item)}
+        >
           <Download className="h-3.5 w-3.5" />
           下载日志
         </Button>

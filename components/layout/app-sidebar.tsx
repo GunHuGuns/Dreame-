@@ -12,12 +12,18 @@ import {
   FileText,
   ChevronLeft,
   Menu,
+  Home,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
 const navItems = [
+  {
+    title: '首页',
+    href: '/',
+    icon: Home,
+  },
   {
     title: '设备查询',
     href: '/devices',

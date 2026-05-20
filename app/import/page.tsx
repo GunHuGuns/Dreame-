@@ -1,14 +1,15 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef } from 'react'
 import { PageHeader } from '@/components/layout/page-header'
 import { FilterPanel, FilterItem } from '@/components/shared/filter-panel'
 import { DataTable, type Column } from '@/components/shared/data-table'
 import { StatusBadge } from '@/components/shared/status-badge'
+import { exportToCSV } from '@/components/shared/export-button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { Download } from 'lucide-react'
+import { Download, Upload } from 'lucide-react'
 import { mockImports } from '@/lib/mock-data'
 import type { DeviceImport } from '@/lib/types'
 
@@ -23,6 +24,43 @@ export default function ImportPage() {
   const [appliedFilters, setAppliedFilters] = useState(filters)
   const [currentPage, setCurrentPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // 处理导入设备
+  const handleImportClick = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      // 模拟导入操作
+      alert(`已选择文件: ${file.name}\n（模拟导入成功，实际项目中需要调用后端API）`)
+      e.target.value = '' // 清空以便再次选择
+    }
+  }
+
+  // 下载设备列表
+  const handleDownloadDeviceList = (item: DeviceImport) => {
+    // 模拟生成设备列表数据
+    const deviceListData = Array.from({ length: item.successCount }, (_, i) => ({
+      序号: i + 1,
+      IMEI: `86${item.batchNumber.slice(-6)}${String(i).padStart(8, '0')}`,
+      DeviceID: `DEV-${item.batchNumber}-${String(i).padStart(4, '0')}`,
+      SN: `SN${item.batchNumber.slice(-6)}${String(i).padStart(6, '0')}`,
+      导入状态: '成功',
+      导入时间: item.importTime,
+    }))
+    
+    exportToCSV(deviceListData, `设备列表_${item.batchNumber}`, [
+      { key: '序号', label: '序号' },
+      { key: 'IMEI', label: 'IMEI' },
+      { key: 'DeviceID', label: 'Device ID' },
+      { key: 'SN', label: 'SN' },
+      { key: '导入状态', label: '导入状态' },
+      { key: '导入时间', label: '导入时间' },
+    ])
+  }
 
   // 获取所有操作员列表
   const operators = useMemo(() => {
@@ -108,8 +146,13 @@ export default function ImportPage() {
       key: 'actions',
       header: '操作',
       width: '120px',
-      render: () => (
-        <Button variant="ghost" size="sm" className="h-8 gap-1 text-primary">
+      render: (item) => (
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="h-8 gap-1 text-primary"
+          onClick={() => handleDownloadDeviceList(item)}
+        >
           <Download className="h-3.5 w-3.5" />
           下载设备列表
         </Button>
@@ -122,6 +165,21 @@ export default function ImportPage() {
       <PageHeader
         title="导入设备"
         description="查看和管理批量导入的设备记录"
+        actions={
+          <>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".csv,.xlsx,.xls"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <Button onClick={handleImportClick} className="gap-2">
+              <Upload className="h-4 w-4" />
+              导入设备
+            </Button>
+          </>
+        }
       />
 
       <FilterPanel onSearch={handleSearch} onReset={handleReset}>
