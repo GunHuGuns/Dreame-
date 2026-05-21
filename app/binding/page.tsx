@@ -6,7 +6,8 @@ import { FilterPanel, FilterItem } from '@/components/shared/filter-panel'
 import { DataTable, type Column } from '@/components/shared/data-table'
 import { StatusBadge } from '@/components/shared/status-badge'
 import { Input } from '@/components/ui/input'
-import { mockBindings } from '@/lib/mock-data'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { mockBindings, categories, brands, models } from '@/lib/mock-data'
 import type { DeviceBinding } from '@/lib/types'
 
 export default function BindingPage() {
@@ -15,6 +16,9 @@ export default function BindingPage() {
     deviceId: '',
     sn: '',
     accountId: '',
+    category: '',
+    brand: '',
+    model: '',
     startDate: '',
     endDate: '',
   })
@@ -29,6 +33,9 @@ export default function BindingPage() {
       if (appliedFilters.deviceId && !item.deviceId.includes(appliedFilters.deviceId)) return false
       if (appliedFilters.sn && !item.sn.includes(appliedFilters.sn)) return false
       if (appliedFilters.accountId && !item.accountId.includes(appliedFilters.accountId)) return false
+      if (appliedFilters.category && item.category !== appliedFilters.category) return false
+      if (appliedFilters.brand && item.brand !== appliedFilters.brand) return false
+      if (appliedFilters.model && !item.model.includes(appliedFilters.model)) return false
       if (appliedFilters.startDate) {
         const itemDate = new Date(item.bindingTime)
         const startDate = new Date(appliedFilters.startDate)
@@ -61,6 +68,9 @@ export default function BindingPage() {
       deviceId: '',
       sn: '',
       accountId: '',
+      category: '',
+      brand: '',
+      model: '',
       startDate: '',
       endDate: '',
     }
@@ -123,8 +133,56 @@ export default function BindingPage() {
             placeholder="请输入账号ID"
             value={filters.accountId}
             onChange={(e) => setFilters({ ...filters, accountId: e.target.value })}
-            className="w-36"
+            className="w-32"
           />
+        </FilterItem>
+        <FilterItem label="品类">
+          <Select
+            value={filters.category}
+            onValueChange={(value) => setFilters({ ...filters, category: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-28">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {categories.map((c) => (
+                <SelectItem key={c} value={c}>{c}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FilterItem>
+        <FilterItem label="品牌">
+          <Select
+            value={filters.brand}
+            onValueChange={(value) => setFilters({ ...filters, brand: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-24">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {brands.map((b) => (
+                <SelectItem key={b} value={b}>{b}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FilterItem>
+        <FilterItem label="型号">
+          <Select
+            value={filters.model}
+            onValueChange={(value) => setFilters({ ...filters, model: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-24">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {models.map((m) => (
+                <SelectItem key={m} value={m}>{m}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </FilterItem>
         <FilterItem label="开始时间">
           <Input

@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Download } from 'lucide-react'
-import { mockLogs } from '@/lib/mock-data'
+import { mockLogs, categories, brands, models } from '@/lib/mock-data'
 import type { DeviceLog } from '@/lib/types'
 
 export default function LogsPage() {
@@ -18,6 +18,9 @@ export default function LogsPage() {
     imei: '',
     deviceId: '',
     sn: '',
+    category: '',
+    brand: '',
+    model: '',
     logType: '',
     logLevel: '',
     startDate: '',
@@ -33,6 +36,9 @@ export default function LogsPage() {
       if (appliedFilters.imei && !item.imei.includes(appliedFilters.imei)) return false
       if (appliedFilters.deviceId && !item.deviceId.includes(appliedFilters.deviceId)) return false
       if (appliedFilters.sn && !item.sn.includes(appliedFilters.sn)) return false
+      if (appliedFilters.category && item.category !== appliedFilters.category) return false
+      if (appliedFilters.brand && item.brand !== appliedFilters.brand) return false
+      if (appliedFilters.model && !item.model.includes(appliedFilters.model)) return false
       if (appliedFilters.logType && item.logType !== appliedFilters.logType) return false
       if (appliedFilters.logLevel && item.logLevel !== appliedFilters.logLevel) return false
       if (appliedFilters.startDate) {
@@ -66,6 +72,9 @@ export default function LogsPage() {
       imei: '',
       deviceId: '',
       sn: '',
+      category: '',
+      brand: '',
+      model: '',
       logType: '',
       logLevel: '',
       startDate: '',
@@ -199,8 +208,56 @@ ${item.detail}
             placeholder="请输入SN"
             value={filters.sn}
             onChange={(e) => setFilters({ ...filters, sn: e.target.value })}
-            className="w-32"
+            className="w-28"
           />
+        </FilterItem>
+        <FilterItem label="品类">
+          <Select
+            value={filters.category}
+            onValueChange={(value) => setFilters({ ...filters, category: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-28">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {categories.map((c) => (
+                <SelectItem key={c} value={c}>{c}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FilterItem>
+        <FilterItem label="品牌">
+          <Select
+            value={filters.brand}
+            onValueChange={(value) => setFilters({ ...filters, brand: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-24">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {brands.map((b) => (
+                <SelectItem key={b} value={b}>{b}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FilterItem>
+        <FilterItem label="型号">
+          <Select
+            value={filters.model}
+            onValueChange={(value) => setFilters({ ...filters, model: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-24">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {models.map((m) => (
+                <SelectItem key={m} value={m}>{m}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </FilterItem>
         <FilterItem label="日志类型">
           <Select

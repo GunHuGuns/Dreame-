@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { Download, Upload } from 'lucide-react'
-import { mockImports } from '@/lib/mock-data'
+import { mockImports, categories, brands, models } from '@/lib/mock-data'
 import type { DeviceImport } from '@/lib/types'
 
 export default function ImportPage() {
@@ -20,6 +20,9 @@ export default function ImportPage() {
     endDate: '',
     importStatus: '',
     operator: '',
+    category: '',
+    brand: '',
+    model: '',
   })
   const [appliedFilters, setAppliedFilters] = useState(filters)
   const [currentPage, setCurrentPage] = useState(1)
@@ -107,6 +110,9 @@ export default function ImportPage() {
       endDate: '',
       importStatus: '',
       operator: '',
+      category: '',
+      brand: '',
+      model: '',
     }
     setFilters(resetFilters)
     setAppliedFilters(resetFilters)
@@ -226,9 +232,9 @@ export default function ImportPage() {
         <FilterItem label="操作员">
           <Select
             value={filters.operator}
-            onValueChange={(value) => setFilters({ ...filters, operator: value })}
+            onValueChange={(value) => setFilters({ ...filters, operator: value === 'all' ? '' : value })}
           >
-            <SelectTrigger className="w-28">
+            <SelectTrigger className="w-24">
               <SelectValue placeholder="全部" />
             </SelectTrigger>
             <SelectContent>
@@ -237,6 +243,54 @@ export default function ImportPage() {
                 <SelectItem key={op} value={op}>
                   {op}
                 </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FilterItem>
+        <FilterItem label="品类">
+          <Select
+            value={filters.category}
+            onValueChange={(value) => setFilters({ ...filters, category: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-28">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {categories.map((c) => (
+                <SelectItem key={c} value={c}>{c}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FilterItem>
+        <FilterItem label="品牌">
+          <Select
+            value={filters.brand}
+            onValueChange={(value) => setFilters({ ...filters, brand: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-24">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {brands.map((b) => (
+                <SelectItem key={b} value={b}>{b}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FilterItem>
+        <FilterItem label="型号">
+          <Select
+            value={filters.model}
+            onValueChange={(value) => setFilters({ ...filters, model: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-24">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {models.map((m) => (
+                <SelectItem key={m} value={m}>{m}</SelectItem>
               ))}
             </SelectContent>
           </Select>

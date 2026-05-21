@@ -6,9 +6,10 @@ import { FilterPanel, FilterItem } from '@/components/shared/filter-panel'
 import { DataTable, type Column } from '@/components/shared/data-table'
 import { MapDialog } from '@/components/shared/map-dialog'
 import { Input } from '@/components/ui/input'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
 import { MapPin } from 'lucide-react'
-import { mockLocations } from '@/lib/mock-data'
+import { mockLocations, categories, brands, models } from '@/lib/mock-data'
 import type { DeviceLocation } from '@/lib/types'
 
 export default function LocationPage() {
@@ -16,6 +17,9 @@ export default function LocationPage() {
     imei: '',
     deviceId: '',
     sn: '',
+    category: '',
+    brand: '',
+    model: '',
     startDate: '',
     endDate: '',
   })
@@ -31,6 +35,9 @@ export default function LocationPage() {
       if (appliedFilters.imei && !item.imei.includes(appliedFilters.imei)) return false
       if (appliedFilters.deviceId && !item.deviceId.includes(appliedFilters.deviceId)) return false
       if (appliedFilters.sn && !item.sn.includes(appliedFilters.sn)) return false
+      if (appliedFilters.category && item.category !== appliedFilters.category) return false
+      if (appliedFilters.brand && item.brand !== appliedFilters.brand) return false
+      if (appliedFilters.model && !item.model.includes(appliedFilters.model)) return false
       if (appliedFilters.startDate) {
         const itemDate = new Date(item.requestTime)
         const startDate = new Date(appliedFilters.startDate)
@@ -62,6 +69,9 @@ export default function LocationPage() {
       imei: '',
       deviceId: '',
       sn: '',
+      category: '',
+      brand: '',
+      model: '',
       startDate: '',
       endDate: '',
     }
@@ -131,8 +141,56 @@ export default function LocationPage() {
             placeholder="请输入SN"
             value={filters.sn}
             onChange={(e) => setFilters({ ...filters, sn: e.target.value })}
-            className="w-36"
+            className="w-32"
           />
+        </FilterItem>
+        <FilterItem label="品类">
+          <Select
+            value={filters.category}
+            onValueChange={(value) => setFilters({ ...filters, category: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-28">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {categories.map((c) => (
+                <SelectItem key={c} value={c}>{c}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FilterItem>
+        <FilterItem label="品牌">
+          <Select
+            value={filters.brand}
+            onValueChange={(value) => setFilters({ ...filters, brand: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-24">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {brands.map((b) => (
+                <SelectItem key={b} value={b}>{b}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </FilterItem>
+        <FilterItem label="型号">
+          <Select
+            value={filters.model}
+            onValueChange={(value) => setFilters({ ...filters, model: value === 'all' ? '' : value })}
+          >
+            <SelectTrigger className="w-24">
+              <SelectValue placeholder="全部" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">全部</SelectItem>
+              {models.map((m) => (
+                <SelectItem key={m} value={m}>{m}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </FilterItem>
         <FilterItem label="开始时间">
           <Input

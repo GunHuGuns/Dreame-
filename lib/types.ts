@@ -98,6 +98,9 @@ export interface DeviceLog {
   imei: string
   deviceId: string
   sn: string
+  category: string
+  brand: string
+  model: string
   logType: LogType
   logLevel: LogLevel
   timestamp: string

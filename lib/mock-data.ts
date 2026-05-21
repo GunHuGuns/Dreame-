@@ -13,6 +13,9 @@ export const categories = ['智能手表', '智能手环', '智能眼镜', '智�
 // 品牌列表
 export const brands = ['华为', '小米', 'OPPO', 'vivo', '荣耀', '一加']
 
+// 型号列表
+export const models = ['Pro', 'Pro Max', 'Ultra', 'Lite', 'Standard', 'Plus', 'SE', 'Air']
+
 // 运营商列表
 export const carriers = ['中国移动', '中国联通', '中国电信']
 
@@ -51,7 +54,7 @@ export const generateDevices = (count: number = 50): Device[] => {
     sn: generateSN(),
     category: categories[Math.floor(Math.random() * categories.length)],
     brand: brands[Math.floor(Math.random() * brands.length)],
-    model: `Model-${Math.floor(Math.random() * 100)}`,
+    model: `${brands[Math.floor(Math.random() * brands.length)]} ${models[Math.floor(Math.random() * models.length)]}`,
     systemVersion: `v${Math.floor(Math.random() * 10)}.${Math.floor(Math.random() * 10)}.${Math.floor(Math.random() * 10)}`,
     firmwareVersion: `FW${Math.floor(Math.random() * 100)}.${Math.floor(Math.random() * 10)}`,
     carrier: carriers[Math.floor(Math.random() * carriers.length)],
@@ -73,7 +76,7 @@ export const generateActivations = (count: number = 50): DeviceActivation[] => {
     sn: generateSN(),
     category: categories[Math.floor(Math.random() * categories.length)],
     brand: brands[Math.floor(Math.random() * brands.length)],
-    model: `Model-${Math.floor(Math.random() * 100)}`,
+    model: `${brands[Math.floor(Math.random() * brands.length)]} ${models[Math.floor(Math.random() * models.length)]}`,
     activationStatus: (['已激活', '未激活'] as const)[Math.floor(Math.random() * 2)],
     activationTime: generateDate(90),
   }))
@@ -108,7 +111,7 @@ export const generateBindings = (count: number = 50): DeviceBinding[] => {
     accountId: `ACC${Math.floor(Math.random() * 100000)}`,
     category: categories[Math.floor(Math.random() * categories.length)],
     brand: brands[Math.floor(Math.random() * brands.length)],
-    model: `Model-${Math.floor(Math.random() * 100)}`,
+    model: `${brands[Math.floor(Math.random() * brands.length)]} ${models[Math.floor(Math.random() * models.length)]}`,
     bindingTime: generateDate(120),
     bindingStatus: (['已绑定', '未绑定'] as const)[Math.floor(Math.random() * 2)],
   }))
@@ -143,7 +146,7 @@ export const generateLocations = (count: number = 50): DeviceLocation[] => {
       accountId: `ACC${Math.floor(Math.random() * 100000)}`,
       category: categories[Math.floor(Math.random() * categories.length)],
       brand: brands[Math.floor(Math.random() * brands.length)],
-      model: `Model-${Math.floor(Math.random() * 100)}`,
+      model: `${brands[Math.floor(Math.random() * brands.length)]} ${models[Math.floor(Math.random() * models.length)]}`,
       requestTime: generateDate(7),
       longitude: city.lng + lngOffset,
       latitude: city.lat + latOffset,
@@ -195,6 +198,9 @@ export const generateLogs = (count: number = 100): DeviceLog[] => {
       imei: generateIMEI(),
       deviceId: generateDeviceId(),
       sn: generateSN(),
+      category: categories[Math.floor(Math.random() * categories.length)],
+      brand: brands[Math.floor(Math.random() * brands.length)],
+      model: `${brands[Math.floor(Math.random() * brands.length)]} ${models[Math.floor(Math.random() * models.length)]}`,
       logType,
       logLevel,
       timestamp: generateDate(30),
