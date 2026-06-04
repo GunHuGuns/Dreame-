@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Smartphone, Zap, Upload, Link2, MapPin, FileText } from 'lucide-react'
+import { Smartphone, Zap, Upload, Link2, MapPin } from 'lucide-react'
 import Link from 'next/link'
 
 const stats = [
@@ -43,14 +43,6 @@ const stats = [
     count: '956',
     label: '有位置记录',
   },
-  {
-    title: '设备日志',
-    description: '设备日志查询和下载',
-    href: '/logs',
-    icon: FileText,
-    count: '12,458',
-    label: '日志条数',
-  },
 ]
 
 export default function HomePage() {
@@ -93,7 +85,6 @@ export default function HomePage() {
           <p>3. 使用「导入设备」模块批量导入新设备</p>
           <p>4. 使用「设备账号绑定」模块管理设备与用户账号的绑定关系</p>
           <p>5. 使用「设备位置」模块查看设备地理位置</p>
-          <p>6. 使用「设备日志」模块查看和下载设备运行日志</p>
         </CardContent>
       </Card>
     </div>

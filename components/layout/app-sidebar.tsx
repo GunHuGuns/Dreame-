@@ -9,7 +9,6 @@ import {
   Upload,
   Link2,
   MapPin,
-  FileText,
   ChevronLeft,
   Menu,
   Home,
@@ -49,11 +48,6 @@ const navItems = [
     title: '设备位置',
     href: '/location',
     icon: MapPin,
-  },
-  {
-    title: '设备日志',
-    href: '/logs',
-    icon: FileText,
   },
   {
     title: 'PRD文档',
